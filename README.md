@@ -1,0 +1,2 @@
+# SocialMediaApp
+React, Redux, Firebase
