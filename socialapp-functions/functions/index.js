@@ -6,7 +6,7 @@ const app = require("express")();
 const FBAuth = require('./util/fbAuth');
 
 const {getAllThoughts, postOneThought} = require('./handlers/thoughts');
-const {signup, login} = require('./handlers/users');
+const {signup, login, uploadImage} = require('./handlers/users');
 
 
 //Thought - routes
@@ -18,5 +18,6 @@ app.post("/showerThought", FBAuth, postOneThought);
 //Users route
 app.post("/signup", signup);
 app.post("/login", login);
+app.post('/user/image', FBAuth ,uploadImage);
 
 exports.api = functions.https.onRequest(app);
