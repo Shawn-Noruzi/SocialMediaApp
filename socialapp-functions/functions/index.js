@@ -22,7 +22,8 @@ firebase.initializeApp(config);
 
 const db = admin.firestore();
 
-app.get("/showerThought", (req, res) => {
+//Grab all thoughts
+app.get("/showerThoughts", (req, res) => {
   db.collection("showerThought")
     .orderBy("createdAt", "desc")
     .get()
@@ -43,10 +44,49 @@ app.get("/showerThought", (req, res) => {
     .catch(err => console.error(err));
 });
 
-app.post("/showerThought", (req, res) => {
+const FBAuth = (req, res, next) => {
+  //middleware to check if the user thats posting a thought is logged in (token used here to auth)
+  let idToken;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer ')
+  ) {
+    idToken = req.headers.authorization.split('Bearer ')[1];
+  } else {
+    console.error("No token found");
+    return res.status(403).json({ error: "Unauthorized" });
+  }
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then(decodedToken => {
+      req.user = decodedToken;
+      console.log('decodedToken:      ',decodedToken);
+      return db
+        .collection("users")
+        .where("userId", "==", req.user.uid)
+        .limit(1)
+        .get();
+    })
+    .then(data => {
+      req.user.handle = data.docs[0].data().handle;
+      return next();
+    })
+    .catch(err => {
+      console.error("Error while verifying token", err);
+      return res.status(403).json(err);
+    });
+};
+
+//Post just one thoughts
+app.post("/showerThought", FBAuth, (req, res) => {
+  if (req.body.body.trim() === "") {
+    return res.status(400).json({ body: "Body must not be empty" });
+  }
+
   const newThought = {
     body: req.body.body,
-    userHandle: req.body.userHandle,
+    userHandle: req.user.handle,
     createdAt: new Date().toISOString()
   };
 
