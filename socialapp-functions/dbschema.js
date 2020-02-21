@@ -1,49 +1,64 @@
 let db = {
-  scream: [
-    {
-      userHandle: "user",
-      body: "This is the body",
-      createdAt: "2019-03-15T11:46:01.018z",
-      likeCount: 5,
-      commentCount: 2
-    }
-  ],
-
   users: [
     {
-      bio: "heyyyyy",
-      createdAt: "2020-02-20T22:23:11.370Z",
-      email: "newUser2020@gmail.com",
-      handle: "helloWorld",
-      imageUrl:"https://firebasestorage.googleapis.com/v0/b/socialapp-4c8c3.appspot.com/o/361255358745.png?alt=media",
-      location: "London dadwweewUK",
-      userId: "GlEgKrZiGzMXGHeAlo6zavb7I2A3",
-      website: "https://google.com"
+      userId: 'dh23ggj5h32g543j5gf43',
+      email: 'user@email.com',
+      handle: 'user',
+      createdAt: '2019-03-15T10:59:52.798Z',
+      imageUrl: 'image/dsfsdkfghskdfgs/dgfdhfgdh',
+      bio: 'Hello, my name is user, nice to meet you',
+      website: 'https://user.com',
+      location: 'Lonodn, UK'
+    }
+  ],
+  thoughts: [
+    {
+      userHandle: 'user',
+      body: 'This is a sample thought',
+      createdAt: '2019-03-15T10:59:52.798Z',
+      likeCount: 5,
+      commentCount: 3
+    }
+  ],
+  comments: [
+    {
+      userHandle: 'user',
+      thoughtId: 'kdjsfgdksuufhgkdsufky',
+      body: 'nice one mate!',
+      createdAt: '2019-03-15T10:59:52.798Z'
+    }
+  ],
+  notifications: [
+    {
+      recipient: 'user',
+      sender: 'john',
+      read: 'true | false',
+      thoughtId: 'kdjsfgdksuufhgkdsufky',
+      type: 'like | comment',
+      createdAt: '2019-03-15T10:59:52.798Z'
     }
   ]
-}
-
+};
 const userDetails = {
-//redux data
-    credentials: {
-        userId: "5u093rjg9093jt9"
-        bio: "heyyyyy",
-        createdAt: "2020-02-20T22:23:11.370Z",
-        email: "newUser2020@gmail.com",
-        handle: "helloWorld",
-        imageUrl:"https://firebasestorage.googleapis.com/v0/b/socialapp-4c8c3.appspot.com/o/361255358745.png?alt=media",
-        location: "London dadwweewUK",
-        website: "https://google.com"
+  // Redux data
+  credentials: {
+    userId: 'N43KJ5H43KJHREW4J5H3JWMERHB',
+    email: 'user@email.com',
+    handle: 'user',
+    createdAt: '2019-03-15T10:59:52.798Z',
+    imageUrl: 'image/dsfsdkfghskdfgs/dgfdhfgdh',
+    bio: 'Hello, my name is user, nice to meet you',
+    website: 'https://user.com',
+    location: 'Lonodn, UK'
+  },
+  likes: [
+    {
+      userHandle: 'user',
+      thoughtId: 'hh7O5oWfWucVzGbHH2pa'
     },
-    likes: [
-        {
-          userHandle: "user",
-          screamId: "4327498237489f789eyruhw7u"
-        },
-        {
-          userHandle: "user",
-          screamId: "4827498efusdr4354rgerfgegerghfw"
-        }
-      ]
-}
-
+    {
+      userHandle: 'user',
+      thoughtId: '3IOnFoQexRcofs5OhBXO'
+    }
+  ]
+};
