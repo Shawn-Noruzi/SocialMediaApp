@@ -217,8 +217,8 @@ exports.unlikeThought = (req, res) => {
 };
 
 // Delete a thought
-exports.deleteThought = (req, res) => {
-  const document = db.doc(`/showerThought/${req.params.thoughtId}`);
+exports.deleteThought = async (req, res) => {
+  const document =  db.doc(`/showerThought/${req.params.thoughtId}`);
   document
     .get()
     .then((doc) => {
@@ -226,6 +226,8 @@ exports.deleteThought = (req, res) => {
         return res.status(404).json({ error: 'thought not found' });
       }
       if (doc.data().userHandle !== req.user.handle) {
+        console.log('doc handle', doc.data().userHandle)
+        console.log('user handle', req.user.handle)
         return res.status(403).json({ error: 'Unauthorized' });
       } else {
         return document.delete();
