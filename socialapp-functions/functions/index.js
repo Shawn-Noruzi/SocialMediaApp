@@ -5,7 +5,7 @@ const functions = require("firebase-functions");
 const app = require("express")();
 const FBAuth = require('./util/fbAuth');
 
-const {getAllThoughts, postOneThought, getThought, commentOnThought} = require('./handlers/thoughts');
+const {getAllThoughts, postOneThought, getThought, commentOnThought, likeThought, unlikeThought, deleteThought} = require('./handlers/thoughts');
 const {signup, login, uploadImage, addUserDetails, getAuthenticatedUser} = require('./handlers/users');
 
 
@@ -19,8 +19,10 @@ app.get('/showerThought/:thoughtId', getThought);
 //TODO: like thought
 //TODO: unlike thoughts
 //TODO: comment on thought
-app.post('/showerThought/:thoughtId/comment', FBAuth, commentOnThought)
-
+app.post('/showerThought/:thoughtId/comment', FBAuth, commentOnThought);
+app.get('/showerThought/:thoughtId/like', FBAuth, likeThought);
+app.get('/showerThought/:thoughtId/unlike', FBAuth, unlikeThought);
+app.delete('/showerThought/:thoughtId', FBAuth, deleteThought);
 
 
 //Users route
