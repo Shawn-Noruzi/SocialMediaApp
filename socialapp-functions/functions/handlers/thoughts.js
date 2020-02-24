@@ -1,24 +1,28 @@
 const { db } = require("../util/admin");
 
 exports.getAllThoughts = (req, res) => {
-  db.collection("showerThought")
-    .orderBy("createdAt", "desc")
+  db.collection('showerThought')
+    .orderBy('createdAt', 'desc')
     .get()
-    .then(data => {
+    .then((data) => {
       let thoughts = [];
-      data.forEach(doc => {
+      data.forEach((doc) => {
         thoughts.push({
-          //Unique ID for each thought
           thoughtId: doc.id,
-          //...doc.data()
           body: doc.data().body,
           userHandle: doc.data().userHandle,
-          createdAt: doc.data().createdAt
+          createdAt: doc.data().createdAt,
+          commentCount: doc.data().commentCount,
+          likeCount: doc.data().likeCount,
+          userImage: doc.data().userImage
         });
       });
       return res.json(thoughts);
     })
-    .catch(err => console.error(err));
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code });
+    });
 };
 
 exports.postOneThought = (req, res) => {
@@ -82,7 +86,8 @@ exports.getThought = (req, res) => {
 exports.commentOnThought = (req, res) => {
   //validate body
   if (req.body.body.trim() === "")
-    return res.status(400).json({ error: "Must not be empty" });
+    return res.status(400).json({ comment: "Must not be empty" });
+    
   const newComment = {
     body: req.body.body,
     createdAt: new Date().toISOString(),
