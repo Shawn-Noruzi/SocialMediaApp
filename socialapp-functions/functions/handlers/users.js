@@ -113,6 +113,46 @@ exports.addUserDetails = (req, res) => {
     });
 };
 
+// Get any user's details
+exports.getUserDetails = (req, res) => {
+  let userData = {};
+  db.doc(`/users/${req.params.handle}`)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        userData.user = doc.data();
+        return db
+          .collection('showerThought')
+          .where('userHandle', '==', req.params.handle)
+          .orderBy('createdAt', 'desc')
+          .get();
+      } else {
+        //if doc doesnt exist
+        return res.status(404).json({ errror: 'User not found' });
+      }
+    })
+    .then((data) => {
+      // debug here
+      userData.showerThought = [];
+      data.forEach((doc) => {
+        userData.showerThought.push({
+          body: doc.data().body,
+          createdAt: doc.data().createdAt,
+          userHandle: doc.data().userHandle,
+          userImage: doc.data().userImage,
+          likeCount: doc.data().likeCount,
+          commentCount: doc.data().commentCount,
+          thoughtId: doc.id
+        });
+      });
+      return res.json(userData);
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(500).json({ error: err.code });
+    });
+};
+
 //get own user details
 exports.getAuthenticatedUser = (req, res) => {
   let userData = {};
@@ -131,6 +171,21 @@ exports.getAuthenticatedUser = (req, res) => {
       userData.likes = [];
       data.forEach(doc => {
         userData.likes.push(doc.data());
+      });
+      return db.collection('notifications').where('recipient', '==', req.user.handle).orderBy('createdAt', 'desc').limit(10).get();
+      return res.json(userData);
+    }).then(data => {
+      userData.notifications = [];
+      data.forEach(doc=>{
+        userData.notifications.push({
+          recipient: doc.data().recipient,
+          sender: doc.data().sender,
+          createdAt: doc.data().createdAt,
+          thoughtId: doc.data().thoughtId,
+          type: doc.data().type,
+          read: doc.data().read,
+          notificationId: doc.id
+        })
       });
       return res.json(userData);
     })

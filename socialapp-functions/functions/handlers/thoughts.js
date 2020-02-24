@@ -53,8 +53,7 @@ exports.getThought = (req, res) => {
   db.doc(`/showerThought/${req.params.thoughtId}`)
     .get()
     .then(doc => {
-      console.log("doc", !doc.exists);
-      console.log("doc.data", doc.data());
+
       if (!doc.exists) {
         return res.status(404).json({ error: "Thought not found" });
       }
@@ -130,7 +129,7 @@ exports.likeThought = (req, res) => {
     .then((doc) => {
       if (doc.exists) {
         thoughtData = doc.data();
-        console.log('doc.data', doc.data() )
+ 
         thoughtData.thoughtId = doc.id;
 
         return likeDocument.get();
@@ -184,7 +183,7 @@ exports.unlikeThought = (req, res) => {
     .then((doc) => {
       if (doc.exists) {
         thoughtData = doc.data();
-        console.log('doc.data', doc.data() )
+ 
 
         thoughtData.thoughtId = doc.id;
         return likeDocument.get();
