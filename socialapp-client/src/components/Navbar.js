@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {Link} from "react-router-dom";
+import {connect} from 'react-redux';
 
 //MUI Stuff - import only what we need from MUI to increase performance - instead of importing all of @MUI-core
 import AppBar from "@material-ui/core/AppBar";

@@ -1,12 +1,13 @@
 import {
   SET_USER,
   SET_AUTHENTICATED,
-  SET_UNAUTHENTICATED
-} from "../types";
+  SET_UNAUTHENTICATED,
+  LOADING_USER
+} from '../types';
 
-//userState
 const initialState = {
-  autheticated: false,
+  authenticated: false,
+  loading: false,
   credentials: {},
   likes: [],
   notifications: []
@@ -17,14 +18,20 @@ export default function(state = initialState, action) {
     case SET_AUTHENTICATED:
       return {
         ...state,
-        autheticated: true
+        authenticated: true
       };
     case SET_UNAUTHENTICATED:
       return initialState;
     case SET_USER:
       return {
-        autheticated: true,
+        authenticated: true,
+        loading: false,
         ...action.payload
+      };
+    case LOADING_USER:
+      return {
+        ...state,
+        loading: true
       };
     default:
       return state;
