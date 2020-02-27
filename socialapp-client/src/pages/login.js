@@ -1,18 +1,20 @@
-import React, { Component } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import loginImage from "../images/loginImage.png";
-import axios from "axios";
+import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import PropTypes from 'prop-types';
+import loginImage from '../images/loginImage.png';
+import { Link } from 'react-router-dom';
 
-//MUI stuff
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
+// MUI Stuff
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+// Redux stuff
+import { connect } from 'react-redux';
+import { loginUser } from '../redux/actions/userActions';
 
-const styles = theme => ({
+const styles = (theme) => ({
   ...theme.spreadThis
 });
 
@@ -20,65 +22,46 @@ class login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "",
-      password: "",
-      //for cold stars (spinner functionality)
-      loading: false,
+      email: '',
+      password: '',
       errors: {}
     };
   }
-  handleSubmit = event => {
-    console.log("state", this.state);
-    console.log("handlesubmit");
-    //prevent page reload + url data exposure
+  //errors wont show up in login page if we dont bring in updated prop values required for it. 
+  // user types wrong credentials ? errors gets updated -> gets pulled into component -> nextProps sets state causing re-render 
+  // wont work otherwise since setState isnt called for error updates anywhere else in the code
+  componentWillReceiveProps(nextProps) {
+    //only setState when errors is changed because we'll always be getting in new props
+    if (nextProps.UI.errors) {
+      this.setState({ errors: nextProps.UI.errors });
+    }
+  }
+  handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({
-      loading: true
-    });
     const userData = {
       email: this.state.email,
       password: this.state.password
     };
-    console.log(userData);
-    //post to login endpoint
-    axios
-      .post("/login", userData)
-      .then(res => {
-        console.log(res.data);
-        //storing auth token locally so if they refresh/close its still accessible
-        localStorage.setItem("FBIdToken", `Bearer ${res.data.token}`);
-        this.setState({
-          loading: false
-        });
-        //redirect to home page
-        this.props.history.push("/");
-      })
-      .catch(err => {
-        this.setState({
-          errors: err.response.data,
-          loading: false
-        });
-      });
+    this.props.loginUser(userData, this.props.history);
   };
-
-  handleChange = event => {
+  handleChange = (event) => {
+    event.preventDefault() 
     this.setState({
       [event.target.name]: event.target.value
     });
   };
   render() {
-    const { classes } = this.props;
-    const { errors, loading } = this.state;
+    const {
+      classes,
+      UI: { loading }
+    } = this.props;
+    const { errors } = this.state;
+
     return (
-      //center content using 3 Grids 33% each
       <Grid container className={classes.form}>
         <Grid item sm />
         <Grid item sm>
-          <img
-            className={classes.loginImage}
-            src={loginImage}
-            alt="loginImage"
-          />
+          <img src={loginImage} alt="login" className={classes.image} />
           <Typography variant="h2" className={classes.pageTitle}>
             Login
           </Typography>
@@ -136,9 +119,23 @@ class login extends Component {
   }
 }
 
-//strict type check for props
 login.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  loginUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  UI: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(login);
+const mapStateToProps = (state) => ({
+  user: state.user,
+  UI: state.UI
+});
+
+const mapActionsToProps = {
+  loginUser
+};
+
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withStyles(styles)(login));
