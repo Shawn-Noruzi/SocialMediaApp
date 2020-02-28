@@ -1,31 +1,24 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
-import axios from "axios";
+import PropTypes from "prop-types";
 
 import Thought from "../components/Thought";
 import Profile from "../components/Profile";
 
-class home extends Component {
-  state = {
-    thoughts: null
-  };
+import { connect } from "react-redux";
+import { getThoughts } from "../redux/actions/dataActions";
 
+class home extends Component {
   //fetch data from backend for thoughts
   componentDidMount() {
-    axios
-      .get("/showerThoughts")
-      .then(res => {
-        this.setState({
-          thoughts: res.data
-        });
-      })
-      .catch(err => console.log(err));
+    this.props.getThoughts();
   }
 
   render() {
+    const { thoughts, loading } = this.props.data;
     //if the thought data has been loaded show them -> else show loading
-    let recentThoughtsMarkup = this.state.thoughts ? (
-      this.state.thoughts.map(thought => (
+    let recentThoughtsMarkup = !loading ? (
+      thoughts.map(thought => (
         <Thought key={thought.thoughtId} thought={thought} />
       ))
     ) : (
@@ -38,11 +31,20 @@ class home extends Component {
           {recentThoughtsMarkup}
         </Grid>
         <Grid item sm={4} xs={12}>
-          <Profile/>
+          <Profile />
         </Grid>
       </Grid>
     );
   }
 }
 
-export default home;
+home.propTypes = {
+  getThoughts: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  data: state.data
+});
+
+export default connect(mapStateToProps, { getThoughts })(home);

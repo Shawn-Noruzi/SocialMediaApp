@@ -15,6 +15,10 @@ body {
 .nav-container {
   /* buttons in middle */
   margin: auto;
+  
+}
+.nav-container svg{
+  color: #FFF;
 }
 
 a {
