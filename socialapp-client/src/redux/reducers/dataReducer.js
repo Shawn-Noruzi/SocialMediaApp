@@ -54,6 +54,12 @@ export default function(state = initialState, action) {
       return {
         ...state
       };
+    case POST_THOUGHT:
+      return {
+        ...state,
+        thoughts: [action.payload, ...state.thoughts]
+        
+      }
     default:
       return state;
   }

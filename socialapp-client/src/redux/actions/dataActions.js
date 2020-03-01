@@ -4,7 +4,11 @@ import {
   LIKE_THOUGHT,
   UNLIKE_THOUGHT,
   SET_THOUGHT,
-  DELETE_THOUGHT
+  LOADING_UI,
+  DELETE_THOUGHT,
+  POST_THOUGHT,
+  SET_ERRORS,
+  CLEAR_ERRORS
 } from "../types";
 import axios from "axios";
 
@@ -25,6 +29,25 @@ export const getThoughts = () => dispatch => {
         type: SET_THOUGHTS,
         payload: []
       });
+    });
+};
+
+//post a thought
+export const postThought = newThought => dispatch => {
+  dispatch({
+    type: LOADING_UI
+  });
+  axios
+    .post("/showerThought", newThought)
+    .then(res => {
+      dispatch({
+        type: POST_THOUGHT,
+        payload: res.data
+      });
+      dispatch({ type: CLEAR_ERRORS });
+    })
+    .catch(err => {
+      dispatch({ type: SET_ERRORS, payload: err.response.data });
     });
 };
 

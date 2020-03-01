@@ -44,7 +44,7 @@ exports.postOneThought = (req, res) => {
     .then(doc => {
       const resThought = newThought;
       resThought.thoughtId = doc.id;
-      res.json({ resThought });
+      res.json(resThought);
     })
     .catch(err => {
       res.status(500).json({ error: "something went wrong!" });

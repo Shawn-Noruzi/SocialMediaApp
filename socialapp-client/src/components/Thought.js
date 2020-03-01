@@ -67,14 +67,17 @@ class Thought extends Component {
         likeCount,
         commentCount
       },
-      user: { authenticated, credentials: { handle } }
+      user: {
+        authenticated,
+        credentials: { handle }
+      }
     } = this.props;
     const likeButton = !authenticated ? (
-      <Link to="/login">
-        <MyButton tip="Like">
+      <MyButton tip="Like">
+        <Link to="/login">
           <FavoriteBorder color="primary" />
-        </MyButton>
-      </Link>
+        </Link>
+      </MyButton>
     ) : this.likedThought() ? (
       <MyButton tip="Undo Like" onClick={this.unlikeThought}>
         <FavoriteIcon color="primary" />
@@ -85,11 +88,10 @@ class Thought extends Component {
       </MyButton>
     );
 
-    const deleteButton = authenticated && userHandle === handle ? (
-        <DeleteThought thoughtId={thoughtId}/>
-    ) : (
-      null
-    )
+    const deleteButton =
+      authenticated && userHandle === handle ? (
+        <DeleteThought thoughtId={thoughtId} />
+      ) : null;
     return (
       <Card className={classes.card}>
         <CardMedia

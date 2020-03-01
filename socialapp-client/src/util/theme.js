@@ -14,6 +14,17 @@ export default {
       }
     },
     spreadThis: {
+      submitButton : {
+        position: 'relative'
+    },
+    progressSpinner : {
+        position: 'absolute'
+    },
+    closeButton : {
+        position:"absolute",
+        left: "90",
+        top: "6"
+    },
       form: {
         textAlign: "center"
       },
