@@ -28,9 +28,11 @@ const token = localStorage.FBIdToken;
 if (token) {
   const decodedToken = jwtDecode(token);
   if (decodedToken.exp * 1000 < Date.now()) {
+    //if user token expired send them to login
     store.dispatch(logoutUser())
     window.location.href = '/login';
   } else {
+    //set authenticated to true and get their data 
     store.dispatch({ type: SET_AUTHENTICATED})
     axios.defaults.headers.common['Authorization'] = token
     store.dispatch(getUserData());

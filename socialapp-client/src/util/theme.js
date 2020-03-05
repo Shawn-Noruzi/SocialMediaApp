@@ -14,6 +14,32 @@ export default {
       }
     },
     spreadThis: {
+      profileImage: {
+        maxWidth: 200,
+        height: 200,
+        borderRadius: '50%',
+        objectFit: 'cover'
+      },
+      DialogContent: {
+        padding: 10
+      },
+      closeButtonRight: {
+        position: 'absolute',
+        left: '90%'
+      },
+      expandButton: {
+        position: 'absolute',
+        left: '90%'
+      },
+      spinnerDiv: {
+        textAlign: 'center',
+        marginTop: 50,
+        marginBottom: 50
+      },
+      invisibleSeperator:{
+        border:'none',
+        margin:4
+    },
       submitButton : {
         position: 'relative'
     },

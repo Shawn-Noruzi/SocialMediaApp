@@ -13,7 +13,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 // Redux stuff
 import { connect } from 'react-redux';
-import { postThought } from '../redux/actions/dataActions';
+import { postThought, clearErrors } from '../redux/actions/dataActions';
 
 const styles = (theme) => ({
   ...theme.spreadThis,
@@ -44,16 +44,16 @@ class PostThought extends Component {
         errors: nextProps.UI.errors
       });
     }
-   
+   //for error handling when a user closes a component that has the ability to change the 'error' value in state 
     if (!nextProps.UI.errors && !nextProps.UI.loading) {
-      this.setState({ body: '' });
-      this.handleClose();
+      this.setState({ body: '', open: false, errors: {} });
     }
   }
   handleOpen = () => {
     this.setState({ open: true });
   };
   handleClose = () => {
+    this.props.clearErrors();
     this.setState({ open: false, errors: {} });
   };
   handleChange = (event) => {
@@ -93,7 +93,7 @@ class PostThought extends Component {
               <TextField
                 name="body"
                 type="text"
-                label="SCREAM!!"
+                label="Thought!!"
                 multiline
                 rows="3"
                 placeholder="Thought at your fellow apes"
@@ -128,6 +128,7 @@ class PostThought extends Component {
 
 PostThought.propTypes = {
   postThought: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   UI: PropTypes.object.isRequired
 };
 
@@ -137,5 +138,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { postThought }
+  { postThought, clearErrors }
 )(withStyles(styles)(PostThought));
