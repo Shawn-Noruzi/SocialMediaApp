@@ -9,7 +9,8 @@ import {
   POST_THOUGHT,
   SET_ERRORS,
   CLEAR_ERRORS,
-  STOP_LOADING_UI
+  STOP_LOADING_UI,
+  SUBMIT_COMMENT
 } from "../types";
 import axios from "axios";
 
@@ -58,10 +59,29 @@ export const postThought = newThought => dispatch => {
         type: POST_THOUGHT,
         payload: res.data
       });
-      dispatch({ type: CLEAR_ERRORS });
+      dispatch(clearErrors());
     })
     .catch(err => {
       dispatch({ type: SET_ERRORS, payload: err.response.data });
+    });
+};
+
+//submit a comment
+export const submitComment = (thoughtId, commentData) => dispatch => {
+  axios
+    .post(`/showerThought/${thoughtId}/comment`, commentData)
+    .then(res => {
+      dispatch({
+        type: SUBMIT_COMMENT,
+        payload: res.data
+      });
+      dispatch(clearErrors());
+    })
+    .catch(err => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data
+      });
     });
 };
 
@@ -108,6 +128,22 @@ export const deleteThought = thoughtId => dispatch => {
     .catch(err => console.log(err));
 };
 
+export const getUserData = userHandle => dispatch => {
+  dispatch({ type: LOADING_DATA });
+  axios
+    .get(`/user/${userHandle}`)
+    .then(res => {
+      dispatch({
+        type: SET_THOUGHTS,
+        payload: res.data.thoughts
+      });
+    })
+    .catch(err => {
+      dispatch({ type: SET_THOUGHTS, payload: null });
+    });
+};
+
+//action creator - only dispatches an action
 export const clearErrors = () => dispatch => {
   dispatch({ type: CLEAR_ERRORS });
 };

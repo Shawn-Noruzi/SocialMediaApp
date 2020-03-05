@@ -12,10 +12,11 @@ import { SET_AUTHENTICATED } from './redux/types';
 import {logoutUser, getUserData} from './redux/actions/userActions' ;
 
 // Components
-import Navbar from './components/Navbar';
+import Navbar from './components/layout/Navbar';
 import themeObject from './util/theme';
 import AuthRoute from './util/AuthRoute';
 // Pages
+import user from './pages/user'
 import home from './pages/home';
 import login from './pages/login';
 import signup from './pages/signup';
@@ -51,6 +52,7 @@ class App extends Component {
                 <Route exact path="/" component={home} />
                 <AuthRoute exact path="/login" component={login} />
                 <AuthRoute exact path="/signup" component={signup} />
+                <Route exact path="/users/:handle" component={user}/>
               </Switch>
             </div>
           </Router>

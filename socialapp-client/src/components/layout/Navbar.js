@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import MyButton from "../util/MyButton";
+import MyButton from "../../util/MyButton";
 
 //MUI Stuff - import only what we need from MUI to increase performance - instead of importing all of @MUI-core
 import AppBar from "@material-ui/core/AppBar";
@@ -10,7 +10,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 
 //icons
-import PostThought from './PostThought';
+import PostThought from '../thought/PostThought';
 import HomeIcon from "@material-ui/icons/Home";
 import Notifications from "@material-ui/icons/Notifications";
 

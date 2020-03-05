@@ -1,10 +1,12 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
-import MyButton from "../util/MyButton";
+import MyButton from "../../util/MyButton";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
-import LikeButton from './LikeButton';
+import LikeButton from "./LikeButton";
+import Comments from "./Comments";
+import CommentForm from "./CommentForm";
 //mui stuff
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -17,11 +19,10 @@ import UnfoldMore from "@material-ui/icons/UnfoldMore";
 import ChatIcon from "@material-ui/icons/Chat";
 //redux
 import { connect } from "react-redux";
-import { getThought } from "../redux/actions/dataActions";
+import { getThought, clearErrors } from "../../redux/actions/dataActions";
 
-const styles = (theme) => ({
-  ...theme.spreadThis,
-
+const styles = theme => ({
+  ...theme.spreadThis
 });
 
 class ThoughtDialog extends Component {
@@ -35,6 +36,7 @@ class ThoughtDialog extends Component {
 
   handleClose = () => {
     this.setState({ open: false });
+    this.props.clearErrors();
   };
   render() {
     const {
@@ -46,15 +48,16 @@ class ThoughtDialog extends Component {
         likeCount,
         commentCount,
         userImage,
-        userHandle
+        userHandle,
+        comments
       },
       UI: { loading }
     } = this.props;
 
     const dialogMarkup = loading ? (
-    <div className={classes.spinnerDiv}>
-        <CircularProgress size={200} thickness={2}/>
-    </div>
+      <div className={classes.spinnerDiv}>
+        <CircularProgress size={200} thickness={2} />
+      </div>
     ) : (
       <Grid container spacing={16}>
         <Grid item sm={5}>
@@ -71,19 +74,20 @@ class ThoughtDialog extends Component {
           </Typography>
           <hr className={classes.invisibleSeparator} />
           <Typography variant="body2" color="textSecondary">
-            {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
+            {dayjs(createdAt).format("h:mm a, MMMM DD YYYY")}
           </Typography>
           <hr className={classes.invisibleSeparator} />
           <Typography variant="body1">{body}</Typography>
-          <LikeButton thoughtId = {thoughtId}/>
+          <LikeButton thoughtId={thoughtId} />
           <span>{likeCount} likes</span>
           <MyButton tip="comments">
             <ChatIcon color="primary" />
           </MyButton>
           <span>{commentCount} comments</span>
-
         </Grid>
-
+        <hr className={classes.visibleSeperator} />
+        <CommentForm thoughtId={thoughtId} />
+        <Comments comments={comments} />
       </Grid>
     );
 
@@ -120,6 +124,7 @@ class ThoughtDialog extends Component {
 
 ThoughtDialog.propTypes = {
   getThought: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   thoughtId: PropTypes.string.isRequired,
   userHandle: PropTypes.string.isRequired,
   thought: PropTypes.object.isRequired,
@@ -132,7 +137,8 @@ const mapStateToProps = state => ({
 });
 
 const mapActionsToProps = {
-  getThought
+  getThought,
+  clearErrors
 };
 
 export default connect(

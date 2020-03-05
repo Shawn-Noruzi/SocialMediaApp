@@ -60,6 +60,14 @@ export default function(state = initialState, action) {
         thoughts: [action.payload, ...state.thoughts]
         
       }
+    case SUBMIT_COMMENT:
+      return {
+        ...state,
+        thought: {
+            ...state.thought,
+            comments: [...state.thought.comments, action.payload]
+        } 
+      }
     default:
       return state;
   }

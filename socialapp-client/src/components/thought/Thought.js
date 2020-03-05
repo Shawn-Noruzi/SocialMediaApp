@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 import PropTypes from "prop-types";
-import MyButton from "../util/MyButton";
+import MyButton from "../../util/MyButton";
 import DeleteThought from "./DeleteThought";
 import ThoughtDialog from "./ThoughtDialog";
 import LikeButton from "./LikeButton";
@@ -95,8 +95,6 @@ class Thought extends Component {
 }
 
 Thought.propTypes = {
-  likeThought: PropTypes.func.isRequired,
-  unlikeThought: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   thought: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired

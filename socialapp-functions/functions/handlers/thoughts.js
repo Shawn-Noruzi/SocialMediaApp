@@ -82,7 +82,7 @@ exports.getThought = (req, res) => {
     });
 };
 
-//comment on a comment
+//comment on a thought
 exports.commentOnThought = (req, res) => {
   //validate body
   if (req.body.body.trim() === "")
