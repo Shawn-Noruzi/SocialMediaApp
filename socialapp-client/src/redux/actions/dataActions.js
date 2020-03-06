@@ -130,15 +130,18 @@ export const deleteThought = thoughtId => dispatch => {
 
 export const getUserData = userHandle => dispatch => {
   dispatch({ type: LOADING_DATA });
+  console.log(userHandle)
   axios
     .get(`/user/${userHandle}`)
     .then(res => {
+      console.log('setting thoughts')
       dispatch({
         type: SET_THOUGHTS,
         payload: res.data.thoughts
       });
     })
-    .catch(err => {
+    .catch(() => {
+      console.log('error thrown')
       dispatch({ type: SET_THOUGHTS, payload: null });
     });
 };

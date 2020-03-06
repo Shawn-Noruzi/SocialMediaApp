@@ -125,15 +125,13 @@ exports.getUserDetails = (req, res) => {
           .orderBy('createdAt', 'desc')
           .get();
       } else {
-        //if doc doesnt exist
         return res.status(404).json({ errror: 'User not found' });
       }
     })
     .then((data) => {
-      // debug here
-      userData.showerThought = [];
+      userData.thoughts = [];
       data.forEach((doc) => {
-        userData.showerThought.push({
+        userData.thoughts.push({
           body: doc.data().body,
           createdAt: doc.data().createdAt,
           userHandle: doc.data().userHandle,
@@ -150,7 +148,6 @@ exports.getUserDetails = (req, res) => {
       return res.status(500).json({ error: err.code });
     });
 };
-
 //get own user details
 exports.getAuthenticatedUser = (req, res) => {
   let userData = {};
