@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Thought from '../components/thought/Thought';
 import StaticProfile from '../components/profile/StaticProfile';
+import ProfileSkeleton from "../util/ProfileSkeleton"
+import ThoughtSkeleton from "../util/ThoughtSkeleton"
 import Grid from '@material-ui/core/Grid';
 
 import { connect } from 'react-redux';
@@ -34,7 +36,7 @@ class user extends Component {
     const { thoughtIdParam } = this.state;
 
     const screamsMarkup = loading ? (
-      <p>Loading data...</p>
+      <ThoughtSkeleton/>
     ) : thoughts === null ? (
       <p>No Thoughts from this user</p>
     ) : !thoughtIdParam ? (
@@ -54,7 +56,7 @@ class user extends Component {
         </Grid>
         <Grid item sm={4} xs={12}>
           {this.state.profile === null ? (
-            <p>Loading profile...</p>
+            <ProfileSkeleton/>
           ) : (
             <StaticProfile profile={this.state.profile} />
           )}
