@@ -18,7 +18,8 @@ export default {
         maxWidth:'100%',
         height:100,
         objectFit: 'cover',
-        borderRadius:'50%'
+        borderRadius:'50%',
+        marginLeft:8
       },
       commentData: {
         marginLeft: 20
@@ -32,7 +33,9 @@ export default {
         maxWidth: 200,
         height: 200,
         borderRadius: '50%',
-        objectFit: 'cover'
+        objectFit: 'cover',
+        marginLeft: 8
+
       },
       DialogContent: {
         padding: 10

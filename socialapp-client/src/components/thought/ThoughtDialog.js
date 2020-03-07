@@ -27,14 +27,40 @@ const styles = theme => ({
 
 class ThoughtDialog extends Component {
   state = {
-    open: false
+    open: false,
+    oldPath: null,
+    newPath: null
   };
+
+  componentDidMount() {
+    if (this.props.openDialog) {
+      this.handleOpen();
+    }
+  }
+
   handleOpen = () => {
-    this.setState({ open: true });
+    //twitter functionality when a thought dialog is open
+    let oldPath = window.location.pathname;
+    console.log("window.location.pathname", oldPath);
+    const { userHandle, thoughtId } = this.props;
+    const newPath = `/users/${userHandle}/thought/${thoughtId}`;
+
+    //edge case -> if user starts on a thought url/user url -> the old url is = to startUrl so it wont work as intended. 
+    if (oldPath === newPath) {
+      oldPath = `/users/${userHandle}`;
+    }
+
+    window.history.pushState(null, null, newPath);
+
+    this.setState({ open: true, oldPath, newPath });
+    //when a user opens a thought -> the url changes to be newPath. pushState just changes URL
     this.props.getThought(this.props.thoughtId);
+
+  
   };
 
   handleClose = () => {
+    window.history.pushState(null,null, this.state.oldPath)
     this.setState({ open: false });
     this.props.clearErrors();
   };
@@ -85,7 +111,7 @@ class ThoughtDialog extends Component {
           </MyButton>
           <span>{commentCount} comments</span>
         </Grid>
-        <hr className={classes.visibleSeperator} />
+        <hr className={classes.visibleSeparator} />
         <CommentForm thoughtId={thoughtId} />
         <Comments comments={comments} />
       </Grid>

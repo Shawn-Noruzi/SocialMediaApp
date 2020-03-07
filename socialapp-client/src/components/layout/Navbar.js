@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import MyButton from "../../util/MyButton";
+import Notifications from './Notifications';
 
 //MUI Stuff - import only what we need from MUI to increase performance - instead of importing all of @MUI-core
 import AppBar from "@material-ui/core/AppBar";
@@ -12,7 +13,7 @@ import Button from "@material-ui/core/Button";
 //icons
 import PostThought from '../thought/PostThought';
 import HomeIcon from "@material-ui/icons/Home";
-import Notifications from "@material-ui/icons/Notifications";
+
 
 class Navbar extends Component {
   render() {
@@ -29,9 +30,7 @@ class Navbar extends Component {
                   <HomeIcon  />
                 </MyButton>
               </Link>
-              <MyButton tip="Notifications">
                 <Notifications  />
-              </MyButton>
             </Fragment>
           ) : (
             <Fragment>

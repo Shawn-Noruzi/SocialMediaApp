@@ -87,7 +87,7 @@ class Thought extends Component {
             <ChatIcon color="primary" />
           </MyButton>
           <span>{commentCount} comments</span>
-          <ThoughtDialog thoughtId={thoughtId} userHandle={userHandle} />
+          <ThoughtDialog thoughtId={thoughtId} userHandle={userHandle} openDialog = {this.props.openDialog}/>
         </CardContent>
       </Card>
     );
@@ -97,7 +97,8 @@ class Thought extends Component {
 Thought.propTypes = {
   user: PropTypes.object.isRequired,
   thought: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  openDialog: PropTypes.bool
 };
 
 const mapStateToProps = state => ({

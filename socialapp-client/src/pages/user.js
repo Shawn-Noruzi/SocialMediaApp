@@ -10,10 +10,15 @@ import { getUserData } from '../redux/actions/dataActions';
 
 class user extends Component {
   state = {
-    profile: null
+    profile: null,
+    thoughtIdParam: null
   };
   componentDidMount() {
     const handle = this.props.match.params.handle;
+    const thoughtId = this.props.match.params.thoughtId;
+    //if it exists , set it in state
+    if (thoughtId) this.setState({ thoughtIdParam: thoughtId })
+
     this.props.getUserData(handle);
     axios
       .get(`/user/${handle}`)
@@ -26,14 +31,21 @@ class user extends Component {
   }
   render() {
     const { thoughts, loading } = this.props.data;
+    const { thoughtIdParam } = this.state;
 
     const screamsMarkup = loading ? (
       <p>Loading data...</p>
     ) : thoughts === null ? (
       <p>No Thoughts from this user</p>
-    ) : (
+    ) : !thoughtIdParam ? (
       thoughts.map((thought) => <Thought key={thought.thoughtId} thought={thought} />)
-    );
+    ) : (
+      thoughts.map((thought)=>{
+        if (thought.thoughtId !== thoughtIdParam)
+          return <Thought key={thought.thoughtId} thought={thought} />
+        else return <Thought key={thought.thoughtId} thought={thought} openDialog/>
+      })
+    )
 
     return (
       <Grid container spacing={16}>
