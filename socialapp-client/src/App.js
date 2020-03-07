@@ -25,6 +25,8 @@ import signup from './pages/signup';
 
 const theme = createMuiTheme(themeObject);
 
+axios.defaults.baseURL= 'https://us-central1-socialapp-4c8c3.cloudfunctions.net/api'
+
 const token = localStorage.FBIdToken;
 if (token) {
   const decodedToken = jwtDecode(token);
